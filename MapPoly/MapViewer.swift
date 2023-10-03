@@ -37,10 +37,10 @@ struct MapViewer: View {
             MapReader { reader in
                 Map(position: $cameraPosition, interactionModes: modes) {
                     
-                    // the polygon inner space
+                    // the polygon
                     MapPolygon(coordinates: polyModel.points.map{$0.coord})
-                           .stroke(.white, lineWidth: 2)
-                           .foregroundStyle(.purple.opacity(0.3))
+                        .stroke(.white, lineWidth: 2)
+                        .foregroundStyle(.purple.opacity(0.3))
                     
                     // the polygon circle handles
                     ForEach(polyModel.points) { p in
@@ -60,9 +60,6 @@ struct MapViewer: View {
                                 }
                         }
                     }
-                    // the connecting lines
-                    MapPolyline(coordinates: polyModel.points.map{$0.coord}, contourStyle: .straight)
-                        .stroke(polyModel.lineColor, lineWidth: 2)
                 }
                 .gesture(
                     DragGesture()
