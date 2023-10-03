@@ -58,22 +58,22 @@ struct MapViewer: View {
                     MapPolyline(coordinates: polyModel.points.map{$0.coord}, contourStyle: .straight)
                         .stroke(polyModel.lineColor, lineWidth: 2)
                 }
-                .onTapGesture { pos in
-                    if polyModel.isAdding, let location = reader.convert(pos, from: .local) {
-                        polyModel.points.append(PolyPoint(coord: location))
-                    }
-                }
-                .simultaneousGesture(DragGesture()
-                    .onChanged { pos in
-                        if let point = polyModel.points.first(where: {$0.id == dragId}),
-                           polyModel.isEditing,
-                           let location = reader.convert(pos.location, from: .local) {
-                            point.coord = location
+                .gesture(
+                    DragGesture()
+                        .onChanged { pos in
+                            if let point = polyModel.points.first(where: {$0.id == dragId}),
+                               polyModel.isEditing,
+                               let location = reader.convert(pos.location, from: .local) {
+                                point.coord = location
+                            }
                         }
-                    }
-                    .onEnded { pos in
-                        
-                    }
+                        .simultaneously(with: SpatialTapGesture()
+                            .onEnded { tap in
+                                if polyModel.isAdding, let location = reader.convert(tap.location, from: .local) {
+                                    polyModel.points.append(PolyPoint(coord: location))
+                                }
+                            }
+                        )
                 )
             }
             .mapStyle(mapStyle)
@@ -101,3 +101,4 @@ struct MapViewer: View {
     }
 
 }
+               
