@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct MapPolyApp: App {
+    @State private var polyModel = PolyModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environment(polyModel)
         }
     }
 }

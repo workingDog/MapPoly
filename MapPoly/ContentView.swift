@@ -6,16 +6,17 @@
 //
 
 import SwiftUI
+import MapKit
+
 
 struct ContentView: View {
+    @Environment(PolyModel.self) var polyModel
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack (alignment: .topLeading) {
+            MapViewer()
+            ToolbarView()
         }
-        .padding()
     }
 }
 

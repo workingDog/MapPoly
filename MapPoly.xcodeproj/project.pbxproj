@@ -7,18 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C7B6A11A2ACBA9AA0077D411 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C7B6A1192ACBA9AA0077D411 /* README.md */; };
+		C7B6A11C2ACBA9B40077D411 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = C7B6A11B2ACBA9B40077D411 /* LICENSE.txt */; };
 		C7E59F592ACA6EF30004385A /* MapPolyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E59F582ACA6EF30004385A /* MapPolyApp.swift */; };
 		C7E59F5B2ACA6EF30004385A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E59F5A2ACA6EF30004385A /* ContentView.swift */; };
 		C7E59F5D2ACA6EF40004385A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7E59F5C2ACA6EF40004385A /* Assets.xcassets */; };
 		C7E59F602ACA6EF40004385A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7E59F5F2ACA6EF40004385A /* Preview Assets.xcassets */; };
+		C7F23F532ACA711D006161E2 /* PolyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F23F522ACA711D006161E2 /* PolyModel.swift */; };
+		C7F23F592ACA7344006161E2 /* MapViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F23F582ACA7344006161E2 /* MapViewer.swift */; };
+		C7F23F5B2ACA7408006161E2 /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F23F5A2ACA7408006161E2 /* ToolbarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C7B6A1192ACBA9AA0077D411 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		C7B6A11B2ACBA9B40077D411 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		C7E59F552ACA6EF30004385A /* MapPoly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapPoly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7E59F582ACA6EF30004385A /* MapPolyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPolyApp.swift; sourceTree = "<group>"; };
 		C7E59F5A2ACA6EF30004385A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C7E59F5C2ACA6EF40004385A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C7E59F5F2ACA6EF40004385A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C7E59F662ACA6F030004385A /* MapPoly.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MapPoly.entitlements; sourceTree = "<group>"; };
+		C7F23F522ACA711D006161E2 /* PolyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolyModel.swift; sourceTree = "<group>"; };
+		C7F23F582ACA7344006161E2 /* MapViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewer.swift; sourceTree = "<group>"; };
+		C7F23F5A2ACA7408006161E2 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +46,8 @@
 		C7E59F4C2ACA6EF30004385A = {
 			isa = PBXGroup;
 			children = (
+				C7B6A11B2ACBA9B40077D411 /* LICENSE.txt */,
+				C7B6A1192ACBA9AA0077D411 /* README.md */,
 				C7E59F572ACA6EF30004385A /* MapPoly */,
 				C7E59F562ACA6EF30004385A /* Products */,
 			);
@@ -51,8 +64,12 @@
 		C7E59F572ACA6EF30004385A /* MapPoly */ = {
 			isa = PBXGroup;
 			children = (
+				C7E59F662ACA6F030004385A /* MapPoly.entitlements */,
 				C7E59F582ACA6EF30004385A /* MapPolyApp.swift */,
 				C7E59F5A2ACA6EF30004385A /* ContentView.swift */,
+				C7F23F522ACA711D006161E2 /* PolyModel.swift */,
+				C7F23F582ACA7344006161E2 /* MapViewer.swift */,
+				C7F23F5A2ACA7408006161E2 /* ToolbarView.swift */,
 				C7E59F5C2ACA6EF40004385A /* Assets.xcassets */,
 				C7E59F5E2ACA6EF40004385A /* Preview Content */,
 			);
@@ -125,6 +142,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7B6A11C2ACBA9B40077D411 /* LICENSE.txt in Resources */,
+				C7B6A11A2ACBA9AA0077D411 /* README.md in Resources */,
 				C7E59F602ACA6EF40004385A /* Preview Assets.xcassets in Resources */,
 				C7E59F5D2ACA6EF40004385A /* Assets.xcassets in Resources */,
 			);
@@ -137,8 +156,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7F23F592ACA7344006161E2 /* MapViewer.swift in Sources */,
 				C7E59F5B2ACA6EF30004385A /* ContentView.swift in Sources */,
+				C7F23F532ACA711D006161E2 /* PolyModel.swift in Sources */,
 				C7E59F592ACA6EF30004385A /* MapPolyApp.swift in Sources */,
+				C7F23F5B2ACA7408006161E2 /* ToolbarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +291,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MapPoly/MapPoly.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MapPoly/Preview Content\"";
@@ -287,6 +310,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ringow.com.MapPoly;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -298,6 +323,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MapPoly/MapPoly.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MapPoly/Preview Content\"";
@@ -316,6 +342,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ringow.com.MapPoly;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
