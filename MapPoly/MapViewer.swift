@@ -36,6 +36,12 @@ struct MapViewer: View {
         VStack (alignment: .leading) {
             MapReader { reader in
                 Map(position: $cameraPosition, interactionModes: modes) {
+                    
+                    // the polygon inner space
+                    MapPolygon(coordinates: polyModel.points.map{$0.coord})
+                           .stroke(.white, lineWidth: 2)
+                           .foregroundStyle(.purple.opacity(0.3))
+                    
                     // the polygon circle handles
                     ForEach(polyModel.points) { p in
                         Annotation("", coordinate: p.coord) {
