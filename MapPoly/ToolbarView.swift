@@ -24,7 +24,7 @@ struct ToolbarView: View {
         }
         .padding(5)
         .buttonStyle(.bordered)
-        .frame(width: 400, height: 45)
+        .frame(width: 400, height: 50)
         .padding(20)
     }
     
@@ -35,6 +35,7 @@ struct ToolbarView: View {
             if !polyModel.isAdding, let last = polyModel.points.first {
                 polyModel.points.append(last)
             }
+            polyModel.isEditing = false
         }) {
             VStack {
                 Image(systemName: "squareshape.controlhandles.on.squareshape.controlhandles")
@@ -44,10 +45,12 @@ struct ToolbarView: View {
                 Text(polyModel.isAdding ? "Add on" : "Add")
                     .font(.caption)
                     .foregroundColor(polyModel.isAdding ? .red : .blue)
-            }.frame(width: 60, height: 40)
+            }.frame(width: 60, height: 50)
         }
         .buttonStyle(.bordered)
         .scaleEffect(polyModel.isAdding ? 1.2 : 1.0)
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
     
     var deletePolyButton: some View {
@@ -67,14 +70,19 @@ struct ToolbarView: View {
                 Text("Delete")
                     .font(.caption)
                     .foregroundColor(polyModel.isDeleting ? .red : .blue)
-            }.frame(width: 60, height: 40)
+            }.frame(width: 60, height: 50)
         }
         .buttonStyle(.bordered)
         .scaleEffect(polyModel.isDeleting ? 1.2 : 1.0)
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
     
     var editPolyButton: some View {
-        Button(action: { polyModel.isEditing.toggle() }) {
+        Button(action: {
+            polyModel.isEditing.toggle()
+            polyModel.isAdding = false
+        }) {
             VStack {
                 Image(systemName: "skew")
                     .resizable()
@@ -83,10 +91,12 @@ struct ToolbarView: View {
                 Text(polyModel.isEditing ? "Edit on" : "Edit off")
                     .font(.caption)
                     .foregroundColor(polyModel.isEditing ? .red : .blue)
-            }.frame(width: 60, height: 40)
+            }.frame(width: 60, height: 50)
         }
         .buttonStyle(.bordered)
         .scaleEffect(polyModel.isEditing ? 1.2 : 1.0)
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
  
 }

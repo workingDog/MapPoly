@@ -32,14 +32,11 @@ import MapKit
 
     var points = [PolyPoint]()
 
-    // not used yet
-    // var polyList = [MapPoly]()
-    
     // looks
-    var handleColor = Color.black.opacity(0.9)
-    var lineColor = Color.red.opacity(0.9)
-    var fillColor = Color.red.opacity(0.8)
-    var selectColor = Color.green.opacity(0.9)
+    var handleColor = Color.black
+    var lineColor = Color.white
+    var fillColor = Color.purple
+    var selectColor = Color.green
     
     func resetStates(to s: Bool) {
         isEditing = s
@@ -47,15 +44,5 @@ import MapKit
         isDeleting = s
         isMoving = s
         isRotating = s
-    }
-}
-
-// not in use
-@Observable class MapPoly: Identifiable {
-    @ObservationIgnored let id = UUID()
-    var coords: [PolyPoint]
-    
-    init(coords: [PolyPoint]) {
-        self.coords = coords
     }
 }

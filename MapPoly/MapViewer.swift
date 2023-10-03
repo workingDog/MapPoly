@@ -15,7 +15,7 @@ import CoreLocation
 struct MapViewer: View {
     @Environment(PolyModel.self) var polyModel
     
-    @State private var mapType: Int = 0
+    @State private var mapType: Int = 2
     @State private var dragId = UUID()
     @State private var modes = MapInteractionModes.all
     
@@ -56,7 +56,7 @@ struct MapViewer: View {
                     }
                     // the connecting lines
                     MapPolyline(coordinates: polyModel.points.map{$0.coord}, contourStyle: .straight)
-                        .stroke(polyModel.lineColor, style: StrokeStyle(lineWidth: 2, dash: [5]))
+                        .stroke(polyModel.lineColor, lineWidth: 2)
                 }
                 .onTapGesture { pos in
                     if polyModel.isAdding, let location = reader.convert(pos, from: .local) {
