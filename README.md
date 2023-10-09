@@ -7,6 +7,7 @@ This is my SwiftUI test code to draw an interactive polygon on a Map.
 ### Add
 
 To add a new polygon, click the `Add` button then click the map to add points. 
+
 You need **at least 3 points** to form a polygon.
 
 Click the `Add` button again to deactivate adding more points. 
@@ -24,3 +25,6 @@ To exit editing, click on the same polygon handle again or the `Edit` button.
 
 To delete the polygon, click the `Delete` button.
 
+### Todo
+
+rotation and translation (Turn and Move)

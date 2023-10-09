@@ -18,16 +18,16 @@ struct MapViewer: View {
     @State private var mapType: Int = 2
     @State private var dragId = UUID()
     @State private var modes = MapInteractionModes.all
-    
+
     var mapStyle: MapStyle {
         return switch(mapType) {
-            case 0: .standard
-            case 1: .hybrid
-            case 2: .imagery
-            default: .standard
+        case 0: .standard
+        case 1: .hybrid
+        case 2: .imagery
+        default: .standard
         }
     }
-
+    
     @State private var cameraPosition: MapCameraPosition = .camera(
         MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 35.68, longitude: 139.75), distance: 4000.0, heading: 0, pitch: 0)
     )
@@ -41,7 +41,7 @@ struct MapViewer: View {
                     MapPolygon(coordinates: polyModel.points.map{$0.coord})
                         .stroke(.white, lineWidth: 2)
                         .foregroundStyle(.purple.opacity(0.3))
-                    
+
                     // the polygon circle handles
                     ForEach(polyModel.points) { p in
                         Annotation("", coordinate: p.coord) {
@@ -63,17 +63,28 @@ struct MapViewer: View {
                 }
                 .gesture(
                     DragGesture()
-                        .onChanged { pos in
-                            if let point = polyModel.points.first(where: {$0.id == dragId}),
-                               polyModel.isEditing,
-                               let location = reader.convert(pos.location, from: .local) {
-                                point.coord = location
+                        .onChanged { drag in
+                            if polyModel.isMoving {
+                                polyModel.doMove(drag)
+                            } else {
+                                if polyModel.isEditing,
+                                   let point = polyModel.points.first(where: {$0.id == dragId}),
+                                   let location = reader.convert(drag.location, from: .local) {
+                                    point.coord = location
+                                }
                             }
                         }
                         .simultaneously(with: SpatialTapGesture()
                             .onEnded { tap in
                                 if polyModel.isAdding, let location = reader.convert(tap.location, from: .local) {
                                     polyModel.points.append(PolyPoint(coord: location))
+                                }
+                            }
+                        )
+                        .simultaneously(with: RotateGesture()
+                            .onChanged { angle in
+                                if polyModel.isRotating {
+                                    polyModel.doRotate(angle.rotation.degrees)
                                 }
                             }
                         )
@@ -93,9 +104,9 @@ struct MapViewer: View {
             .pickerStyle(.segmented)
             .frame(width: 222, height: 44)
         }
-        .onChange(of: polyModel.isEditing) {
-            if polyModel.isEditing {
-                modes.subtract(.pan)
+        .onChange(of: polyModel.isRotating || polyModel.isEditing || polyModel.isMoving) {
+            if polyModel.isRotating || polyModel.isEditing || polyModel.isMoving {
+                modes.subtract(.all)
             } else {
                 modes.update(with: .all)
                 dragId = UUID()
@@ -104,4 +115,3 @@ struct MapViewer: View {
     }
 
 }
-               
