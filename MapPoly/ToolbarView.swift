@@ -19,18 +19,19 @@ struct ToolbarView: View {
     
     var body: some View {
         HStack (spacing: 5) {
-            editPolyButton
-            addPolyButton
-            deletePolyButton
-            rotatePolyButton  // todo
-            movePolyButton    // todo
+            editPolyButton()
+            addPolyButton()
+            deletePolyButton()
+            rotatePolyButton()  // todo
+            movePolyButton()    // todo
         }
         .buttonStyle(.bordered)
         .frame(width: 400, height: 50)
-        .padding([.top,.leading], 20)
+        .padding([.top, .leading], 10)
     }
     
-    var movePolyButton: some View {
+    @ViewBuilder
+    func movePolyButton() -> some View {
         Button(action: { polyModel.isMoving.toggle() }) {
             VStack {
                 Image(systemName: "move.3d")
@@ -48,7 +49,8 @@ struct ToolbarView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
     
-    var rotatePolyButton: some View {
+    @ViewBuilder
+    func rotatePolyButton() -> some View {
         Button(action: { polyModel.isRotating.toggle() }) {
             VStack {
                 Image(systemName: "rectangle.landscape.rotate")
@@ -66,7 +68,8 @@ struct ToolbarView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
     
-    var addPolyButton: some View {
+    @ViewBuilder
+    func addPolyButton() -> some View {
         Button(action: { polyModel.isAdding.toggle() }) {
             VStack {
                 Image(systemName: "squareshape.controlhandles.on.squareshape.controlhandles")
@@ -84,7 +87,8 @@ struct ToolbarView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
     
-    var deletePolyButton: some View {
+    @ViewBuilder
+    func deletePolyButton() -> some View {
         Button(action: {
             polyModel.resetStates(to: false)
             polyModel.isDeleting = true
@@ -109,7 +113,8 @@ struct ToolbarView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
     
-    var editPolyButton: some View {
+    @ViewBuilder
+    func editPolyButton() -> some View {
         Button(action: { 
             polyModel.isEditing.toggle()
             polyModel.isAdding = false

@@ -11,20 +11,18 @@ import MapKit
 import CoreLocation
 
 
-
 struct MapViewer: View {
     @Environment(PolyModel.self) var polyModel
     
     @State private var mapType: Int = 2
-    @State private var dragId = UUID()
     @State private var modes = MapInteractionModes.all
-
+    
     var mapStyle: MapStyle {
         return switch(mapType) {
-        case 0: .standard
-        case 1: .hybrid
-        case 2: .imagery
-        default: .standard
+            case 0: .standard
+            case 1: .hybrid
+            case 2: .imagery
+            default: .standard
         }
     }
     
@@ -32,70 +30,68 @@ struct MapViewer: View {
         MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 35.68, longitude: 139.75), distance: 4000.0, heading: 0, pitch: 0)
     )
     
+    @State private var selection: PolyPoint?
+    
     var body: some View {
         VStack (alignment: .leading) {
             MapReader { reader in
-                Map(position: $cameraPosition, interactionModes: modes) {
+                
+                Map(initialPosition: cameraPosition, bounds: MapCameraBounds(minimumDistance: 0, maximumDistance: 50000), interactionModes: modes,
+                    selection: $selection) {
                     
                     // the polygon
                     MapPolygon(coordinates: polyModel.points.map{$0.coord})
                         .stroke(.white, lineWidth: 2)
                         .foregroundStyle(.purple.opacity(0.3))
-
+                    
                     // the polygon circle handles
                     ForEach(polyModel.points) { p in
                         Annotation("", coordinate: p.coord) {
                             Circle()
                                 .stroke(polyModel.handleColor, lineWidth: 2)
-                                .fill(dragId == p.id ? polyModel.selectColor : polyModel.fillColor)
+                                .fill((selection?.id == p.id && polyModel.isEditing) ? polyModel.selectColor : polyModel.fillColor)
                                 .frame(width: 30, height: 30)
-                                .onTapGesture {
-                                    if dragId == p.id {
-                                        dragId = UUID()
-                                        polyModel.isEditing = false
-                                    } else {
-                                        polyModel.isEditing = true
-                                        dragId = p.id
-                                    }
-                                }
-                        }
+                        }.tag(p)
                     }
                 }
-                .gesture(
-                    DragGesture()
-                        .onChanged { drag in
-                            if polyModel.isMoving {
-                                polyModel.doMove(drag)
-                            } else {
-                                if polyModel.isEditing,
-                                   let point = polyModel.points.first(where: {$0.id == dragId}),
-                                   let location = reader.convert(drag.location, from: .local) {
-                                    point.coord = location
+                    .gesture(
+                        DragGesture()
+                            .onChanged { drag in
+                                if polyModel.isMoving {
+                                    polyModel.doMove(drag)
+                                } else {
+                                    if polyModel.isEditing,
+                                       selection != nil,
+                                       let location = reader.convert(drag.location, from: .local) {
+                                        selection!.coord = location
+                                        if let index = polyModel.points.firstIndex(where: { $0.id == selection!.id }) {
+                                            polyModel.points[index].coord = selection!.coord
+                                        }
+                                    }
                                 }
                             }
-                        }
-                        .simultaneously(with: SpatialTapGesture()
-                            .onEnded { tap in
-                                if polyModel.isAdding, let location = reader.convert(tap.location, from: .local) {
-                                    polyModel.points.append(PolyPoint(coord: location))
+                            .simultaneously(with: SpatialTapGesture()
+                                .onEnded { tap in
+                                    if polyModel.isAdding, let location = reader.convert(tap.location, from: .local) {
+                                        polyModel.points.append(PolyPoint(coord: location))
+                                    }
                                 }
-                            }
-                        )
-                        .simultaneously(with: RotateGesture()
-                            .onChanged { angle in
-                                if polyModel.isRotating {
-                                    polyModel.doRotate(angle.rotation.degrees)
+                            )
+                            .simultaneously(with: RotateGesture()
+                                .onChanged { angle in
+                                    if polyModel.isRotating {
+                                        polyModel.doRotate(angle.rotation.degrees)
+                                    }
                                 }
-                            }
-                        )
-                )
+                            )
+                    )
             }
             .mapStyle(mapStyle)
             .mapControlVisibility(.hidden)
             .edgesIgnoringSafeArea(.all)
             
             Spacer()
-            
+
             Picker("", selection: $mapType) {
                 Text("Standard").tag(0)
                 Text("Hybrid").tag(1)
@@ -109,7 +105,7 @@ struct MapViewer: View {
                 modes.subtract(.all)
             } else {
                 modes.update(with: .all)
-                dragId = UUID()
+                selection = nil
             }
         }
     }

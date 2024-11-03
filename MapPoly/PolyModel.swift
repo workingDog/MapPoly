@@ -12,13 +12,30 @@ import MapKit
 
 
 
-@Observable class PolyPoint: Identifiable {
-    @ObservationIgnored let id = UUID()
-    var coord: CLLocationCoordinate2D
-    
-    init(coord: CLLocationCoordinate2D) {
-        self.coord = coord
+// required for PolyPoint Hashable
+extension CLLocationCoordinate2D: @retroactive Equatable, @retroactive Hashable {
+    public static func == (lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
+        return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
     }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(latitude)
+        hasher.combine(longitude)
+    }
+}
+
+//@Observable class PolyPoint: Identifiable {
+//    @ObservationIgnored let id = UUID()
+//    var coord: CLLocationCoordinate2D
+//    
+//    init(coord: CLLocationCoordinate2D) {
+//        self.coord = coord
+//    }
+//}
+
+struct PolyPoint: Identifiable, Hashable {
+    let id = UUID()
+    var coord: CLLocationCoordinate2D
 }
 
 @Observable class PolyModel {
@@ -30,7 +47,7 @@ import MapKit
     var isMoving = false
     var isRotating = false
 
-    var points = [PolyPoint]()
+    var points: [PolyPoint] = []
 
     // looks
     var handleColor = Color.black
