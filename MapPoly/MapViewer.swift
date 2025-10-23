@@ -40,7 +40,7 @@ struct MapViewer: View {
                     selection: $selection) {
                     
                     // the polygon
-                    MapPolygon(coordinates: polyModel.points.map{$0.coord})
+                    MapPolygon(coordinates: polyModel.coords)
                         .stroke(.white, lineWidth: 2)
                         .foregroundStyle(.purple.opacity(0.3))
                     
@@ -54,7 +54,7 @@ struct MapViewer: View {
                         }.tag(p)
                     }
                 }
-                    .gesture(
+                    .simultaneousGesture(
                         DragGesture()
                             .onChanged { drag in
                                 if polyModel.isMoving {

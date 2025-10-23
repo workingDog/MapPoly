@@ -24,15 +24,6 @@ extension CLLocationCoordinate2D: @retroactive Equatable, @retroactive Hashable 
     }
 }
 
-//@Observable class PolyPoint: Identifiable {
-//    @ObservationIgnored let id = UUID()
-//    var coord: CLLocationCoordinate2D
-//    
-//    init(coord: CLLocationCoordinate2D) {
-//        self.coord = coord
-//    }
-//}
-
 struct PolyPoint: Identifiable, Hashable {
     let id = UUID()
     var coord: CLLocationCoordinate2D
@@ -48,6 +39,11 @@ struct PolyPoint: Identifiable, Hashable {
     var isRotating = false
 
     var points: [PolyPoint] = []
+    
+    // for convenience
+    var coords: [CLLocationCoordinate2D] {
+        points.map(\.coord)
+    }
 
     // looks
     var handleColor = Color.black
