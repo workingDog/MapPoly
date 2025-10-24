@@ -30,7 +30,7 @@ struct MapViewer: View {
         MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 35.68, longitude: 139.75), distance: 4000.0, heading: 0, pitch: 0)
     )
     
-    @State private var selection: PolyPoint?
+    @State private var selection: UUID?
     
     var body: some View {
         VStack (alignment: .leading) {
@@ -49,9 +49,9 @@ struct MapViewer: View {
                         Annotation("", coordinate: p.coord) {
                             Circle()
                                 .stroke(polyModel.handleColor, lineWidth: 2)
-                                .fill((selection?.id == p.id && polyModel.isEditing) ? polyModel.selectColor : polyModel.fillColor)
+                                .fill((selection == p.id && polyModel.isEditing) ? polyModel.selectColor : polyModel.fillColor)
                                 .frame(width: 30, height: 30)
-                        }.tag(p)
+                        }.tag(p.id)
                     }
                 }
                     .simultaneousGesture(
@@ -63,9 +63,8 @@ struct MapViewer: View {
                                     if polyModel.isEditing,
                                        selection != nil,
                                        let location = reader.convert(drag.location, from: .local) {
-                                        selection!.coord = location
-                                        if let index = polyModel.points.firstIndex(where: { $0.id == selection!.id }) {
-                                            polyModel.points[index].coord = selection!.coord
+                                        if let index = polyModel.points.firstIndex(where: { $0.id == selection }) {
+                                            polyModel.points[index].coord = location
                                         }
                                     }
                                 }
