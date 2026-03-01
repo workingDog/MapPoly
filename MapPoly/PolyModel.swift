@@ -6,86 +6,35 @@
 //
 import Foundation
 import CoreLocation
-import Observation
 import SwiftUI
 
 
-
-//@Observable class PolyPoint: Identifiable {
-//    let id = UUID()
-//    var coord: CLLocationCoordinate2D
-//    
-//    init(coord: CLLocationCoordinate2D) {
-//        self.coord = coord
-//    }
-//}
+enum PolyTool: Equatable {
+    case view, add, edit, move, rotate, delete
+}
 
 struct PolyPoint: Identifiable {
     let id = UUID()
     var coord: CLLocationCoordinate2D
 }
 
-@Observable class PolyModel {
-
-    // drawing state
-    var isEditing = false
-    var isAdding = false
-    var isDeleting = false
-    var isMoving = false
-    var isRotating = false
-
+@Observable
+final class PolyModel {
+    var tool: PolyTool = .view
     var points: [PolyPoint] = []
     
-    // for convenience
-    var coords: [CLLocationCoordinate2D] {
-        points.map(\.coord)
-    }
-
+    var coords: [CLLocationCoordinate2D] { points.map(\.coord) }
+    var canMapInteract: Bool { tool == .view }
+    
     // looks
     var handleColor = Color.black
     var lineColor = Color.white
     var fillColor = Color.purple
     var selectColor = Color.green
-
-    func resetStates(to s: Bool) {
-        isEditing = s
-        isAdding = s
-        isDeleting = s
-        isMoving = s
-        isRotating = s
-    }
+    
+    // todo
+    func doRotate(_ drag: DragGesture.Value) { }
 
     // todo
-    func doRotate(_ deg: Double) {
-        /*
-             c = center
-             x` = (x-c)cos - (y-c)sin + cx
-             y' = (x-c)sin + (y-c)cos + cy
-         */
-        let rad = deg < 0 ? 0.01 : -0.01 // in radians
-        
-        let n = Double(points.count)
-        let cy = points.map{ $0.coord.latitude}.reduce(0.0, +) / n
-        let cx = points.map{ $0.coord.longitude}.reduce(0.0, +) / n
-        
-        for i in points.indices {
-            points[i].coord.longitude = (points[i].coord.longitude - cx) * cos(rad) - (points[i].coord.latitude - cy) * sin(rad) + cx
-            
-            points[i].coord.latitude = (points[i].coord.longitude - cx) * sin(rad) + (points[i].coord.latitude - cy) * cos(rad) + cy
-        }
-    }
-
-    // todo
-    func doMove(_ drag: DragGesture.Value) {
-        let step = 0.00003
-
-        let stepx = drag.translation.width > 0 ? step : -step
-        let stepy = drag.translation.height < 0 ? step : -step
-
-        for i in points.indices {
-            points[i].coord.longitude += stepx
-            points[i].coord.latitude += stepy
-        }
-    }
-
+    func doMove(_ drag: DragGesture.Value) { }
 }

@@ -36,7 +36,9 @@ struct MapViewer: View {
         VStack (alignment: .leading) {
             MapReader { reader in
                 
-                Map(initialPosition: cameraPosition, bounds: MapCameraBounds(minimumDistance: 0, maximumDistance: 50000), interactionModes: modes,
+                Map(initialPosition: cameraPosition,
+                    bounds: MapCameraBounds(minimumDistance: 0, maximumDistance: 50000),
+                    interactionModes: polyModel.canMapInteract ? .all : [],
                     selection: $selection) {
                     
                     // the polygon
@@ -49,40 +51,34 @@ struct MapViewer: View {
                         Annotation("", coordinate: p.coord) {
                             Circle()
                                 .stroke(polyModel.handleColor, lineWidth: 2)
-                                .fill((selection == p.id && polyModel.isEditing) ? polyModel.selectColor : polyModel.fillColor)
+                                .fill((selection == p.id && polyModel.tool == .edit) ? polyModel.selectColor : polyModel.fillColor)
                                 .frame(width: 30, height: 30)
-                        }.tag(p.id)
+                        }
                     }
                 }
                     .simultaneousGesture(
-                        DragGesture()
-                            .onChanged { drag in
-                                if polyModel.isMoving {
+                        DragGesture().onChanged { drag in
+                            switch polyModel.tool {
+                                case .move:
                                     polyModel.doMove(drag)
-                                } else {
-                                    if polyModel.isEditing,
-                                       selection != nil,
-                                       let location = reader.convert(drag.location, from: .local) {
-                                        if let index = polyModel.points.firstIndex(where: { $0.id == selection }) {
-                                            polyModel.points[index].coord = location
-                                        }
-                                    }
-                                }
+                                case .edit:
+                                    guard let id = selection,
+                                          let location = reader.convert(drag.location, from: .local),
+                                          let i = polyModel.points.firstIndex(where: { $0.id == id }) else { return }
+                                    polyModel.points[i].coord = location
+                                case .rotate:
+                                    polyModel.doRotate(drag)
+                                default:
+                                    break
                             }
-                            .simultaneously(with: SpatialTapGesture()
-                                .onEnded { tap in
-                                    if polyModel.isAdding, let location = reader.convert(tap.location, from: .local) {
-                                        polyModel.points.append(PolyPoint(coord: location))
-                                    }
-                                }
-                            )
-                            .simultaneously(with: RotateGesture()
-                                .onChanged { angle in
-                                    if polyModel.isRotating {
-                                        polyModel.doRotate(angle.rotation.degrees)
-                                    }
-                                }
-                            )
+                        }
+                    )
+                    .simultaneousGesture(
+                        SpatialTapGesture().onEnded { tap in
+                            guard polyModel.tool == .add,
+                                  let location = reader.convert(tap.location, from: .local) else { return }
+                            polyModel.points.append(.init(coord: location))
+                        }
                     )
             }
             .mapStyle(mapStyle)
@@ -90,7 +86,7 @@ struct MapViewer: View {
             .edgesIgnoringSafeArea(.all)
             
             Spacer()
-
+            
             Picker("", selection: $mapType) {
                 Text("Standard").tag(0)
                 Text("Hybrid").tag(1)
@@ -99,14 +95,6 @@ struct MapViewer: View {
             .pickerStyle(.segmented)
             .frame(width: 222, height: 44)
         }
-        .onChange(of: polyModel.isRotating || polyModel.isEditing || polyModel.isMoving) {
-            if polyModel.isRotating || polyModel.isEditing || polyModel.isMoving {
-                modes.subtract(.all)
-            } else {
-                modes.update(with: .all)
-                selection = nil
-            }
-        }
     }
-
+    
 }

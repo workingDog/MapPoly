@@ -21,48 +21,52 @@ struct ToolbarView: View {
         HStack(spacing: 5) {
             toolbarButton(
                 systemName: "skew",
-                title: polyModel.isEditing ? "Edit on" : "Edit off",
-                isActive: polyModel.isEditing,
+                title: polyModel.tool == .edit ? "Edit on" : "Edit off",
+                isActive: polyModel.tool == .edit,
                 action: {
-                    polyModel.isEditing.toggle()
-                    polyModel.isAdding = false
+                    polyModel.tool = polyModel.tool == .edit ? .view : .edit
                 }
             )
             
             toolbarButton(
                 systemName: "squareshape.controlhandles.on.squareshape.controlhandles",
-                title: polyModel.isAdding ? "Add on" : "Add",
-                isActive: polyModel.isAdding,
-                action: { polyModel.isAdding.toggle() }
+                title: polyModel.tool == .add ? "Add on" : "Add",
+                isActive: polyModel.tool == .add,
+                action: {
+                    polyModel.tool = polyModel.tool == .add ? .view : .add
+                }
             )
             
             toolbarButton(
                 systemName: "flame",
                 title: "Delete",
-                isActive: polyModel.isDeleting,
+                isActive: polyModel.tool == .delete,
                 action: {
-                    polyModel.isDeleting = true
                     withAnimation(.easeInOut(duration: 0.2)) {
-                        polyModel.resetStates(to: false)
+                        polyModel.tool = .view
                         polyModel.points.removeAll()
-                        polyModel.isDeleting = false
                     }
                 }
             )
             
             toolbarButton(
                 systemName: "rectangle.landscape.rotate",
-                title: polyModel.isRotating ? "Turn on" : "Turn",
-                isActive: polyModel.isRotating,
-                action: { polyModel.isRotating.toggle() }
+                title: polyModel.tool == .rotate ? "Turn on" : "Turn",
+                isActive: polyModel.tool == .rotate,
+                action: {
+                    polyModel.tool = polyModel.tool == .rotate ? .view : .rotate
+                }
             )
             
             toolbarButton(
                 systemName: "move.3d",
-                title: polyModel.isMoving ? "Move on" : "Move",
-                isActive: polyModel.isMoving,
-                action: { polyModel.isMoving.toggle() }
+                title: polyModel.tool == .move ? "Move on" : "Move",
+                isActive: polyModel.tool == .move,
+                action: {
+                    polyModel.tool = polyModel.tool == .move ? .view : .move
+                }
             )
+
         }
         .buttonStyle(.bordered)
         .frame(width: 400, height: 50)
