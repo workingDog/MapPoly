@@ -12,89 +12,40 @@ import CoreLocation
 
 
 struct ToolbarView: View {
-    @Environment(PolyModel.self) var polyModel
-    
-    let sw: CGFloat = 60
-    let sh: CGFloat = 50
-    
+    @Environment(PolyModel.self) private var polyModel
+
     var body: some View {
-        HStack(spacing: 5) {
-            toolbarButton(
-                systemName: "skew",
-                title: polyModel.tool == .edit ? "Edit on" : "Edit off",
-                isActive: polyModel.tool == .edit,
-                action: {
-                    polyModel.tool = polyModel.tool == .edit ? .view : .edit
-                }
-            )
-            
-            toolbarButton(
-                systemName: "squareshape.controlhandles.on.squareshape.controlhandles",
-                title: polyModel.tool == .add ? "Add on" : "Add",
-                isActive: polyModel.tool == .add,
-                action: {
-                    polyModel.tool = polyModel.tool == .add ? .view : .add
-                }
-            )
-            
-            toolbarButton(
-                systemName: "flame",
-                title: "Delete",
-                isActive: polyModel.tool == .delete,
-                action: {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        polyModel.tool = .view
-                        polyModel.points.removeAll()
+        HStack(spacing: 8) {
+            ForEach(PolyTool.toolbarTools) { tool in
+                Button {
+                    handleTap(tool)
+                } label: {
+                    VStack {
+                        Image(systemName: tool.icon).resizable().frame(width: 35, height: 35)
+                        Text(tool.title).font(.caption)
                     }
                 }
-            )
-            
-            toolbarButton(
-                systemName: "rectangle.landscape.rotate",
-                title: polyModel.tool == .rotate ? "Turn on" : "Turn",
-                isActive: polyModel.tool == .rotate,
-                action: {
-                    polyModel.tool = polyModel.tool == .rotate ? .view : .rotate
-                }
-            )
-            
-            toolbarButton(
-                systemName: "move.3d",
-                title: polyModel.tool == .move ? "Move on" : "Move",
-                isActive: polyModel.tool == .move,
-                action: {
-                    polyModel.tool = polyModel.tool == .move ? .view : .move
-                }
-            )
-
-        }
-        .buttonStyle(.bordered)
-        .frame(width: 400, height: 50)
-        .padding([.top, .leading], 10)
-    }
-    
-    @ViewBuilder
-    func toolbarButton(
-        systemName: String,
-        title: String,
-        isActive: Bool,
-        action: @escaping () -> Void
-    ) -> some View {
-        Button(action: action) {
-            VStack {
-                Image(systemName: systemName)
-                    .resizable()
-                    .frame(width: 25, height: 25)
-                    .foregroundColor(isActive ? .red : .blue)
-                Text(title)
-                    .font(.caption)
-                    .foregroundColor(isActive ? .red : .blue)
+                .buttonStyle(.bordered)
+                .tint(tint(for: tool, active: polyModel.tool == tool))
+                .scaleEffect(polyModel.tool == tool ? 1.2 : 1.0)
+                .accessibilityLabel(tool.title)
             }
-            .frame(width: sw, height: sh)
         }
-        .buttonStyle(.bordered)
-        .scaleEffect(isActive ? 1.2 : 1.0)
-        .background(Color.white)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .animation(.snappy, value: polyModel.tool)
+        .padding(10)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    private func handleTap(_ tool: PolyTool) {
+        if tool == .delete {
+            polyModel.points.removeAll()
+            polyModel.tool = .view
+        } else {
+            polyModel.tool = (polyModel.tool == tool) ? .view : tool
+        }
+    }
+
+    private func tint(for tool: PolyTool, active: Bool) -> Color {
+        return active ? .red : .black
     }
 }
