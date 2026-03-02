@@ -16,23 +16,23 @@ enum PolyTool: Identifiable, Equatable {
     
     var icon: String {
         switch self {
-        case .view: "hand.draw"
-        case .edit: "skew"
-        case .add: "squareshape.controlhandles.on.squareshape.controlhandles"
-        case .delete: "trash"
-        case .rotate: "rectangle.landscape.rotate"
-        case .move: "move.3d"
+            case .view: "hand.draw"
+            case .edit: "skew"
+            case .add: "squareshape.controlhandles.on.squareshape.controlhandles"
+            case .delete: "trash"
+            case .rotate: "rectangle.landscape.rotate"
+            case .move: "move.3d"
         }
     }
     
     var title: String {
         switch self {
-        case .view: "View"
-        case .edit: "Edit"
-        case .add: "Add"
-        case .delete: "Delete"
-        case .rotate: "Rotate"
-        case .move: "Move"
+            case .view: "View"
+            case .edit: "Edit"
+            case .add: "Add"
+            case .delete: "Delete"
+            case .rotate: "Rotate"
+            case .move: "Move"
         }
     }
     

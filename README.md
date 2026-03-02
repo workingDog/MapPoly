@@ -16,11 +16,11 @@ Click the `Add` button again to deactivate adding more points.
 
 ### Edit
 
-To edit a polygon, click the `Edit off` button, it turns red and becomes `Edit on`.
+To edit a polygon, click the `Edit` button, it turns red.
 Then click the desired polygon handle on the map, it turns green.
 Then drag the handle to the desired position. 
 
-To exit editing, click on the `Edit on` button.
+To exit editing mode, click on the `Edit` button again.
 
 ### Delete
 
